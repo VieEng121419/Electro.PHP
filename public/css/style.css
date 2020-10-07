@@ -1,0 +1,47 @@
+.btn:hover {
+    cursor: pointer;
+}
+
+.error-message {
+    margin-top: 27px;
+    height: 100%;
+    background-color: #DD3939;
+    border-radius: 17px;
+    animation-name: animation;
+    animation-duration: 0.75s;
+}
+
+.icon-error {
+    height: 51px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+}
+
+.error {
+    margin-right: 13px;
+    font-size: 20px;
+}
+
+@keyframes animation {
+    0% {
+        opacity: 0;
+    }
+    /* 30% {
+        opacity: 0.3;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    65% {
+        opacity: 0.6;
+    }
+    80% {
+        opacity: 0.8;
+    } */
+    100% {
+        opacity: 1;
+        transform: scale(1.02);
+    }
+}

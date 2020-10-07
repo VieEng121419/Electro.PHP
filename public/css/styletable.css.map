@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAGQ,cAHM,CAEV,KAAK,CACD,EAAE,CAAA;EACE,gBAAgB,EAAE,aAAa;CAClC",
+    "sources": [
+        "styletable.scss"
+    ],
+    "names": [],
+    "file": "styletable.css"
+}

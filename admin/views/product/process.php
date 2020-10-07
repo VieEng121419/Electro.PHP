@@ -1,0 +1,90 @@
+<?php
+$product = loadModel('product');
+  $userid=(isset($_SESSION["userid"])) ? $_SESSION["userid"] : 1;
+    if(isset($_POST['THEM']))
+    {
+        $slug = str_slug($_POST['name']);
+        $data=array(
+            'catid' => $_POST['catid'],
+            'name' => $_POST['name'],
+            'slug' => $slug,
+            'detail' => $_POST['detail'],
+            'number' => $_POST['number'],
+            'price' => $_POST['price'],
+            'pricesale' => $_POST['pricesale'],
+            'metakey' => $_POST['metakey'],
+            'metadesc' => $_POST['metadesc'],
+            'created_at' => date('Y-m-d H:i:s'),
+            'created_by' => $userid,
+            'updated_at' => date('Y-m-d H:i:s'),
+            'updated_by' => $userid,
+            'status' => $_POST['status'],
+        );
+        if(strlen($_FILES["img"]["name"])>0)
+        {
+        $path_upload = '../public/front-end/img/product/';
+        $target_file = $path_upload . basename($_FILES["img"]["name"]);
+        $type_file = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+        $file_name = $slug.".".$type_file;
+        if (in_array($type_file,['jpg','png','png']))
+        {
+            move_uploaded_file($_FILES["img"]["tmp_name"], $path_upload.$file_name);
+            $data['img'] =  $file_name;
+            $product->product_insert($data);
+            set_flash('message',['type' => 'success','msg' => 'Thành Công', 'msgc' => 'Thêm thành công']);
+            redirect("index.php?option=product");
+        }
+        else
+        {
+           
+            set_flash('message',['type' => 'danger','msg' => 'Thất Bại!','msgc' => 'Định dạng tập tin không đúng']);
+            redirect("index.php?option=product");
+        }
+    }
+        
+    }
+    if (isset($_POST['CAPNHAT']))
+    {
+        $id = $_REQUEST["id"];
+        $row = $product -> product_row(['id' -> $id]);
+        if($row == null)
+        {
+             set_flash('message',['type' => 'danger','msg' => 'Thất Bại!','msgc' => 'Không tồn tại sản phẩm']);
+             redirect("index.php?option=product");
+        }
+        $slug = str_slug($_POST['name']);
+        $data=array(
+            'catid' => $_POST['catid'],
+            'name' => $_POST['name'],
+            'slug' => $slug,
+            'detail' => $_POST['detail'],
+            'number' => $_POST['number'],
+            'price' => $_POST['price'],
+            'pricesale' => $_POST['pricesale'],
+            'metakey' => $_POST['metakey'],
+            'metadesc' => $_POST['metadesc'],
+            'updated_at' => date('Y-m-d H:i:s'),
+            'updated_by' => $userid,
+            'status' => $_POST['status'],
+        );
+        if(strlen($_FILES["img"]["name"])>0)
+        {
+        $path_upload = '../public/front-end/img/product/';
+        $target_file = $path_upload . basename($_FILES["img"]["name"]);
+        $type_file = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+        $file_name = $slug.".".$type_file;
+        if (in_array($type_file,['jpg','png','png']))
+        {
+            if(file_exists($path_upload.$row['img']))
+            {
+                unlink('../public/front-end/img/product/'.$row['img']);
+            }
+            move_uploaded_file($_FILES["img"]["tmp_name"], $path_upload.$file_name);
+            $data['img'] =  $file_name;
+        }
+        }
+        $product->product_update($data, $id);
+        set_flash('message',['type' => 'success','msg' => 'Thành Công!','msgc' => 'Cập nhật thành công']);
+             redirect("index.php?option=product");
+    }
+    
